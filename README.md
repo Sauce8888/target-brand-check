@@ -36,9 +36,42 @@ Check if a brand is stocked at Target using the [Oxylabs](https://oxylabs.io) We
 
 ## Usage
 
+### Web UI
+
 1. Open http://localhost:5173
 2. Enter a brand name (e.g. Nike, Apple, Good & Gather)
 3. Click **Check** to see if the brand appears in Target search results
+
+### Batch processing (large CSV files)
+
+For large lists (thousands of brands), use the batch script. It processes brands in parallel, saves progress for resume, and writes results to CSV.
+
+```bash
+npm run batch -- input.csv output.csv
+```
+
+**Options:**
+
+- `--concurrency=N` — Parallel requests (default: 10). Lower if you hit rate limits.
+
+**Examples:**
+
+```bash
+npm run batch -- brands.csv results.csv
+npm run batch -- brands.csv results.csv --concurrency=3
+```
+
+**Resume:** If the script stops (Ctrl+C, crash, rate limit), run the same command again. It resumes from the last checkpoint.
+
+**Background run:**
+
+```bash
+nohup npm run batch -- brands.csv results.csv > batch.log 2>&1 &
+```
+
+**Input CSV:** Use a column named `Brand`, `Brand Name`, or `Name`. The first column is used if none match.
+
+**Output CSV columns:** `brand`, `isStocked`, `matchCount`, `matchedBrand`, `error`
 
 ## API
 
