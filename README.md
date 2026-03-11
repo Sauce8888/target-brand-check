@@ -52,16 +52,22 @@ npm run batch -- input.csv output.csv
 
 **Options:**
 
-- `--concurrency=N` — Parallel requests (default: 10). Lower if you hit rate limits.
+- `--concurrency=N` — Parallel requests (default: 13)
+- `--dry-run` — Parse CSV and report stats without calling Oxylabs (useful for proofing)
+- `--pause-after=N` — Stop after processing N brands (useful for controlled runs)
+- `--fresh` — Ignore checkpoint and start from the beginning
 
 **Examples:**
 
 ```bash
 npm run batch -- brands.csv results.csv
-npm run batch -- brands.csv results.csv --concurrency=3
+npm run batch -- brands.csv results.csv --fresh
+npm run batch -- brands.csv results.csv --concurrency=13
+npm run batch -- brands.csv results.csv --dry-run
+npm run batch -- brands.csv results.csv --pause-after=1000
 ```
 
-**Resume:** If the script stops (Ctrl+C, crash, rate limit), run the same command again. It resumes from the last checkpoint.
+**Resume:** If the script stops (Ctrl+C, crash, rate limit), run the same command again. It resumes from the last checkpoint. Ctrl+C triggers a graceful shutdown that saves progress.
 
 **Background run:**
 
@@ -71,7 +77,7 @@ nohup npm run batch -- brands.csv results.csv > batch.log 2>&1 &
 
 **Input CSV:** Use a column named `Brand`, `Brand Name`, or `Name`. The first column is used if none match.
 
-**Output CSV columns:** `brand`, `isStocked`, `matchCount`, `matchedBrand`, `error`
+**Output CSV columns:** `brand`, `isStocked`, `matchedBrand`, `error`
 
 ## API
 
@@ -85,7 +91,6 @@ nohup npm run batch -- brands.csv results.csv > batch.log 2>&1 &
 {
   "brand": "Nike",
   "isStocked": true,
-  "matchCount": 5,
   "products": [
     {
       "title": "Product Title",
