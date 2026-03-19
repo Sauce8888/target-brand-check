@@ -79,6 +79,35 @@ nohup npm run batch -- brands.csv results.csv > batch.log 2>&1 &
 
 **Output CSV columns:** `brand`, `isStocked`, `matchedBrand`, `error`
 
+### Batch results check (Target brand page URL)
+
+Checks whether a Target brand page URL has products by parsing the page’s displayed results count (e.g. `4 results` vs `No results found`). Uses **separate Oxylabs credentials**.
+
+1. Add to `.env`:
+
+```bash
+OXYLABS_NEW_USER=your_new_username
+OXYLABS_NEW_PASS=your_new_password
+```
+
+2. Run (defaults to `resultsinput.csv` → `resultsoutput.csv`):
+
+```bash
+npm run results
+```
+
+Or specify files:
+
+```bash
+npm run results -- resultsinput.csv resultsoutput.csv
+```
+
+**Input CSV columns:** `INPUT_URL`, `BRAND_NAME` (other columns allowed and ignored)
+
+**Output CSV columns:** `brand`, `url`, `resultCount`, `resultText`, `error`
+
+**Resume:** If the script stops (Ctrl+C, crash, rate limit), run the same command again. It resumes from the last checkpoint. Ctrl+C triggers a graceful shutdown that saves progress.
+
 ## API
 
 ### `POST /api/check-brand`

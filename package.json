@@ -9,7 +9,8 @@
     "dev:client": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "batch": "node scripts/run-batch.js"
+    "batch": "node scripts/run-batch.js",
+    "results": "node scripts/run-results-batch.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
